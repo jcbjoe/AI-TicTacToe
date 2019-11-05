@@ -16,7 +16,7 @@ TicTacToe *TicTacToe::get_child(smallint move) {
 }
 
 bool TicTacToe::is_win() const {
-    const smallint pt = parent->turn;
+    const smallint pt = get_parent()->turn;
     switch (move) {
     case 0:
         return (s[1] == pt && s[2] == pt) ||
@@ -100,8 +100,8 @@ void TicTacToe::search() {
 			if (s[p] == ZERO) {
 				// Go down the tree
 				children[p] = new TicTacToe(this, p, alpha, beta);
-				if (children[p]->v > max) {
-					max = children[p]->v;
+				if (children[p]->get_v() > max) {
+					max = children[p]->get_v();
 				}
 			}
 		}
@@ -113,8 +113,8 @@ void TicTacToe::search() {
 			if (s[p] == ZERO) {
 				// go down the tree
 				children[p] = new TicTacToe(this, p, alpha, beta);
-				if (children[p]->v < min) {
-					min = children[p]->v;
+				if (children[p]->get_v() < min) {
+					min = children[p]->get_v();
 				}
 			}
 		}
@@ -125,6 +125,18 @@ void TicTacToe::search() {
 TicTacToe::~TicTacToe() {
     for (TicTacToe *child : children)
         delete child;
+}
+
+TicTacToe::smallint TicTacToe::get_v() {
+	return v;
+}
+
+const TicTacToe* TicTacToe::get_parent() const {
+	return parent;
+}
+
+const TicTacToe::smallint TicTacToe::GetStoneAtPos(int pos) const {
+	return s[pos];
 }
 
 // Visualize a stone
@@ -150,9 +162,9 @@ std::ostream &operator<<(std::ostream &out, const TicTacToe &t) {
         "+-6-+-7-+-8-+\n"
         "| %c | %c | %c |\n"
         "+---+---+---+\n",
-        v(t.s[0]), v(t.s[1]), v(t.s[2]),
-        v(t.s[3]), v(t.s[4]), v(t.s[5]),
-        v(t.s[6]), v(t.s[7]), v(t.s[8])
+        v(t.GetStoneAtPos(0)), v(t.GetStoneAtPos(1)), v(t.GetStoneAtPos(2)),
+        v(t.GetStoneAtPos(3)), v(t.GetStoneAtPos(4)), v(t.GetStoneAtPos(5)),
+        v(t.GetStoneAtPos(6)), v(t.GetStoneAtPos(7)), v(t.GetStoneAtPos(8))
     );
     return out << buffer;
 }

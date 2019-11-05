@@ -29,7 +29,7 @@ int main() {
     cout << "\nDraws\t" << root.draw_counter << '\n'
          << "Leaves\t" << root.leaf_counter << '\n'
          << "Nodes\t" << root.node_counter << endl;
-    cout << "\nPayoff at root node: " << static_cast<int>(root.v) << endl;
+    cout << "\nPayoff at root node: " << static_cast<int>(root.get_v()) << endl;
     while (play(&root)) { }
     return EXIT_SUCCESS;
 }
@@ -63,7 +63,7 @@ bool play(TicTacToe *it) {
             for (;;) {
                 cin >> move;
                 if (0 <= move && move < TicTacToe::N_POS &&
-                        it->s[move] == TicTacToe::ZERO)
+                        it->GetStoneAtPos(move) == TicTacToe::ZERO)
                     break;
                 cout << "Invalid move!" << endl;
                 if (!cin) {
@@ -77,10 +77,10 @@ bool play(TicTacToe *it) {
 				// If Human is MAX
 				TicTacToe::smallint min = TicTacToe::INF;
 				for (TicTacToe::smallint p = 0; p < TicTacToe::N_POS; ++p) {
-					if (it->s[p] == TicTacToe::ZERO) {
+					if (it->GetStoneAtPos(p) == TicTacToe::ZERO) {
 						TicTacToe *child = it->get_child(p);
-						if (child->v < min) {
-							min = child->v;
+						if (child->get_v() < min) {
+							min = child->get_v();
 							move = p;
 						}
 					}
@@ -90,10 +90,10 @@ bool play(TicTacToe *it) {
 				// If Human is MIN
 				TicTacToe::smallint max = -TicTacToe::INF;
 				for (TicTacToe::smallint p = 0; p < TicTacToe::N_POS; ++p) {
-					if (it->s[p] == TicTacToe::ZERO) {
+					if (it->GetStoneAtPos(p) == TicTacToe::ZERO) {
 						TicTacToe *child = it->get_child(p);
-						if (child->v > max) {
-							max = child->v;
+						if (child->get_v() > max) {
+							max = child->get_v();
 							move = p;
 						}
 					}
@@ -108,7 +108,7 @@ bool play(TicTacToe *it) {
         if (it->depth == TicTacToe::N_POS || it->is_win()) {
             // Game just ended.
             cout << '\n' << *it << flush;
-            TicTacToe::smallint human_payoff = human * it->v;
+            TicTacToe::smallint human_payoff = human * it->get_v();
             if (human_payoff > 0)
                 cout << "You win!" << endl;
             else if (human_payoff < 0)

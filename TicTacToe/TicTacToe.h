@@ -46,16 +46,19 @@ public:
     //     MIN * (10 - depth)
     // (3) Draw
     //     ZERO
-	smallint v;
+
+	smallint get_v();
 
 	smallint alpha, beta;
 
     // The stone at each board position is MAX, MIN, or ZERO.
-    smallint s[N_POS];
+
+	const smallint GetStoneAtPos(int pos) const;
 
     // The previous TicTacToe state (parent node)
     // For the empty board (root node), parent is nullptr
-    const TicTacToe *parent;
+
+	const TicTacToe* get_parent() const;
 
     // Array containing pointers to the child nodes, indexed by the move (0 ~ 8).
     // nullptr indicates a nonexistent (invalid) child node.
@@ -74,6 +77,12 @@ private:
     // Construct a non-root node and its descendants,
     // given its parent node and the move (0 ~ 8) from the parent state to the current state
     TicTacToe(const TicTacToe *parent, smallint move, smallint alpha, smallint beta);
+
+	smallint v;
+
+	const TicTacToe *parent;
+
+	smallint s[N_POS];
 };
 
 // Print the current TicTacToe board to ostream
