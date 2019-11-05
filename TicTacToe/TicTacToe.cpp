@@ -10,6 +10,9 @@ int TicTacToe::win_counter[N_POS + 1] = {},
     TicTacToe::node_counter = 0;
 
 TicTacToe *TicTacToe::get_child(smallint move) {
+	if (!children[move])
+		children[move] = new TicTacToe(this, move, -INF, +INF);
+	return children[move];
 }
 
 bool TicTacToe::is_win() const {
@@ -62,9 +65,61 @@ TicTacToe::TicTacToe():
 TicTacToe::TicTacToe(const TicTacToe *parent, smallint move, smallint alpha, smallint beta):
         turn(-parent->turn), move(move), depth(parent->depth + 1),
         alpha(alpha), beta(beta), parent(parent) {
+			++node_counter;
+			std::copy(std::begin(parent->s), std::end(parent->s), s);
+			s[move] = parent->turn;
+			bool iswin = is_win(),
+				isfull = depth == N_POS;
+			if (iswin || isfull) {
+				// Game just ended.
+				++leaf_counter;
+				if (iswin) {
+					// Someone just won.
+					if (parent->turn == MAX)
+						++win_counter[depth];
+					else
+						++lose_counter[depth];
+					v = parent->turn * (10 - depth);
+				}
+				else {
+					// Draw
+					++draw_counter;
+					v = ZERO;
+				}
+			}
+			else {
+				// None won, search for further cases
+				search();
+			}
     }
 
 void TicTacToe::search() {
+	if (turn == MAX) {
+		smallint max = -INF;
+		for (smallint p = 0; p < N_POS; ++p) {
+			if (s[p] == ZERO) {
+				// Go down the tree
+				children[p] = new TicTacToe(this, p, alpha, beta);
+				if (children[p]->v > max) {
+					max = children[p]->v;
+				}
+			}
+		}
+		v = max;
+	}
+	else {
+		smallint min = +INF;
+		for (smallint p = 0; p < N_POS; ++p) {
+			if (s[p] == ZERO) {
+				// go down the tree
+				children[p] = new TicTacToe(this, p, alpha, beta);
+				if (children[p]->v < min) {
+					min = children[p]->v;
+				}
+			}
+		}
+		v = min;
+	}
 }
 
 TicTacToe::~TicTacToe() {

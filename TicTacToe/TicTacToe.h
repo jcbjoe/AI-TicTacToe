@@ -13,6 +13,7 @@ class TicTacToe {
 public:
     typedef int_fast8_t smallint;
 	//parameters initialisation
+	static const smallint MAX = 1, MIN = -1, ZERO = 0, INF = 64, N_POS = 9;
 
     // For statistical purpose
     static int win_counter[],
@@ -29,11 +30,14 @@ public:
 
     // It is MAX's or MIN's turn.
     // For empty board, turn is MAX.
+	const smallint turn;
 
     // The latest move (0 ~ 8) that led to the current state
     // (meaningless for root node)
+	const smallint move;
 
     // Depth of the node in the tree (0 ~ 9)
+	const smallint depth;
 
     // Current MAX's payoff
     // (1) X wins
@@ -42,6 +46,9 @@ public:
     //     MIN * (10 - depth)
     // (3) Draw
     //     ZERO
+	smallint v;
+
+	smallint alpha, beta;
 
     // The stone at each board position is MAX, MIN, or ZERO.
     smallint s[N_POS];
