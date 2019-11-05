@@ -139,6 +139,18 @@ const TicTacToe::smallint TicTacToe::GetStoneAtPos(int pos) const {
 	return s[pos];
 }
 
+const TicTacToe::smallint TicTacToe::get_depth() const {
+	return depth;
+}
+
+const TicTacToe::smallint TicTacToe::get_move() const {
+	return move;
+}
+
+const TicTacToe::smallint TicTacToe::get_turn() const {
+	return turn;
+}
+
 // Visualize a stone
 char v(int s) {
     const char X = 'x', O = 'o', S = ' ';

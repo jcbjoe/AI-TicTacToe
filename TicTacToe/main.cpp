@@ -57,7 +57,7 @@ bool play(TicTacToe *it) {
     for (;;) { // Each move
         cout << '\n' << *it << flush;
         int move;
-        if (it->turn == human) {
+        if (it->get_turn() == human) {
             // Human move
             cout << "Your move: " << flush;
             for (;;) {
@@ -105,7 +105,7 @@ bool play(TicTacToe *it) {
 
         }
         it = it->get_child(move);
-        if (it->depth == TicTacToe::N_POS || it->is_win()) {
+        if (it->get_depth() == TicTacToe::N_POS || it->is_win()) {
             // Game just ended.
             cout << '\n' << *it << flush;
             TicTacToe::smallint human_payoff = human * it->get_v();

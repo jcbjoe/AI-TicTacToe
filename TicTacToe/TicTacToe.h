@@ -30,14 +30,15 @@ public:
 
     // It is MAX's or MIN's turn.
     // For empty board, turn is MAX.
-	const smallint turn;
+	const smallint get_turn() const;
 
     // The latest move (0 ~ 8) that led to the current state
     // (meaningless for root node)
-	const smallint move;
+	const smallint get_move() const;
 
     // Depth of the node in the tree (0 ~ 9)
-	const smallint depth;
+	
+	const smallint get_depth() const;
 
     // Current MAX's payoff
     // (1) X wins
@@ -60,10 +61,6 @@ public:
 
 	const TicTacToe* get_parent() const;
 
-    // Array containing pointers to the child nodes, indexed by the move (0 ~ 8).
-    // nullptr indicates a nonexistent (invalid) child node.
-    TicTacToe *children[N_POS] = {};
-
     TicTacToe *get_child(smallint move);
 
     // Check if the last player has just won the game
@@ -83,6 +80,14 @@ private:
 	const TicTacToe *parent;
 
 	smallint s[N_POS];
+
+	const smallint depth;
+	const smallint move;
+	const smallint turn;
+
+	// Array containing pointers to the child nodes, indexed by the move (0 ~ 8).
+	// nullptr indicates a nonexistent (invalid) child node.
+	TicTacToe *children[N_POS] = {};
 };
 
 // Print the current TicTacToe board to ostream
