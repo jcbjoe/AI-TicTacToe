@@ -88,7 +88,7 @@ bool play(TicTacToe *it) {
 			}
 			else {
 				// If Human is MIN
-				TicTacToe::smallint max = TicTacToe::INF;
+				TicTacToe::smallint max = -TicTacToe::INF;
 				for (TicTacToe::smallint p = 0; p < TicTacToe::N_POS; ++p) {
 					if (it->s[p] == TicTacToe::ZERO) {
 						TicTacToe *child = it->get_child(p);

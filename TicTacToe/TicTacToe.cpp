@@ -143,11 +143,11 @@ std::ostream &operator<<(std::ostream &out, const TicTacToe &t) {
     char buffer[BUFSIZE];
     sprintf(
         buffer,
-        "+---+---+---+\n"
+        "+-0-+-1-+-2-+\n"
         "| %c | %c | %c |\n"
-        "+---+---+---+\n"
+        "+-3-+-4-+-5-+\n"
         "| %c | %c | %c |\n"
-        "+---+---+---+\n"
+        "+-6-+-7-+-8-+\n"
         "| %c | %c | %c |\n"
         "+---+---+---+\n",
         v(t.s[0]), v(t.s[1]), v(t.s[2]),
