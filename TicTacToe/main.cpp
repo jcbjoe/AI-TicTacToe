@@ -12,9 +12,11 @@ using std::flush;
 
 bool play(TicTacToe *it);
 
+bool CPUMode = false;
+
 int main() {
     cout << "Solving Tic-tac-toe using minimax search " << endl;
-
+	srand(time(NULL));
     auto t0 = std::chrono::high_resolution_clock::now();
         // Root node
         TicTacToe root;
@@ -38,21 +40,32 @@ bool play(TicTacToe *it) {
     cout << "\nChoose an option:\n"
         << "(X) Play as MAX\n"
         << "(O) Play as MIN\n"
+		<< "(A) Toggle CPU vs CPU Mode\n"
         << "(Q) Quit" << endl;
     TicTacToe::smallint human = 0;
     while (!human) {
         char option;
         cin >> option;
-        switch (option) {
-        case 'Q': case 'q':
-            return false;
-        case 'X': case 'x':
-            human = TicTacToe::MAX;
-            break;
-        case 'O': case 'o':
-            human = TicTacToe::MIN;
-            break;
-        }
+		switch (option) {
+		case 'Q': case 'q':
+			return false;
+		case 'X': case 'x':
+			human = TicTacToe::MAX;
+			break;
+		case 'O': case 'o':
+			human = TicTacToe::MIN;
+			break;
+		case 'A': case 'a':
+			// Toggle CPU Mode
+			CPUMode = !CPUMode;
+			if (CPUMode) {
+				cout << "CPU Mode is on!";
+			}
+			else {
+				cout << "CPU Mode is off!";
+			}
+			break;
+		}
     }
     for (;;) { // Each move
         cout << '\n' << *it << flush;
@@ -61,7 +74,13 @@ bool play(TicTacToe *it) {
             // Human move
             cout << "Your move: " << flush;
             for (;;) {
-                cin >> move;
+				if (CPUMode) {
+					// If CPU mode is on random number between 0-8
+					move = rand() % 9;
+				}
+				else {
+					cin >> move;
+				}
                 if (0 <= move && move < TicTacToe::N_POS &&
                         it->GetStoneAtPos(move) == TicTacToe::ZERO)
                     break;
